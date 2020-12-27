@@ -67,29 +67,45 @@ font-size:12px;
 color:#fff;
 border-radius:3px;
 }
-IQPlayer QListView::item{
+IQPlayer QTableView{
+    border:7px solid rgb(85,85,85);
+    border-radius:7px;
+    padding:5px;
+}
+IQPlayer QTableView::item{
     max-width:20px;
-    border:1px solid #555555;
-    border-radius:2px;
+    border:none;
     margin:1px;
     padding:0px;
 }
-IQPlayer QListView::item:selected{
+IQPlayer QTableView::item:selected{
     background-color:silver;
     border:none;
     color:#505050;
 }
-IQPlayer QListView::item:hover {
+IQPlayer QTableView::item:hover {
     background-color:#505050;
     color:rgba(100,100,100,1);
     border-radius:3px;
     color:#A0A0A0;
 }
-IQPlayer QLabel.titleLabel{
-    color:rgba(240,240,240,0.9);
-    border: 1px solid #808080;
-    border-radius:2px;
- }
+IQPlayer QHeaderView{
+background-color:transparent;
+border:2px solid rgba(85,85,85,0.8);
+border-radius:3px;
+}
+IQPlayer QHeaderView::section{
+background-color:#555555;
+border:1px solid darkgray;
+border-radius:2px;
+color:darkgray;
+}
+
+IQPlayer QHeaderView[orientation = Horizontal]::section{
+background-color:transparent;
+border:none;
+margin-bottom:5px;
+}
 VoicePlayer QWidget.VoicePlayerWidget{
 border:7px solid rgba(75,75,75,0.9);
 border-radius:5px;

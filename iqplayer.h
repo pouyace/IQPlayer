@@ -30,8 +30,6 @@ private:
     QHBoxLayout          *mainLayout       = nullptr;
     QWidget              *innerWidget      = nullptr;
     QWidget              *leftWidget       = nullptr;
-    QWidget              *rightWidget      = nullptr;
-    QVBoxLayout          *rightLayout      = nullptr;
     QVBoxLayout          *leftLayout       = nullptr;
     QHBoxLayout          *innerLeftHLayout = nullptr;
     QWidget              *plotWidget1      = nullptr;
@@ -47,7 +45,6 @@ private:
     VoicePlayer          *player           = nullptr;
     QAction              *action           = nullptr;
     PlayListView         *playListView     = nullptr;
-    QLabel               *titleLabel       = nullptr;
 
     void setupMainUi();
     void tryPlot();
@@ -56,12 +53,13 @@ private:
     void setupPlots();
     void closeEvent(QCloseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
     void onWindowsState();
 
 signals:
-
+    void windowSizeChanged();
     void plot1RescaleRequested();
     void plot2RescaleRequested();
     void playerPaused();

@@ -30,6 +30,7 @@ void IQPlayer::setProperties()
 
 void IQPlayer::setupConnections()
 {
+    connect(this,&IQPlayer::windowSizeChanged,playListView,&PlayListView::onResizingViewList);
     connect(plot1       ,&QCustomPlot::mouseDoubleClick,                this,&IQPlayer::plot1RescaleRequested);
     connect(plot2       ,&QCustomPlot::mouseDoubleClick,                this,&IQPlayer::plot2RescaleRequested);
     connect(action      ,&QAction::toggled,                             this,&IQPlayer::onWindowsState);
@@ -83,24 +84,9 @@ void IQPlayer::setupMainUi()
     leftWidget = new QWidget(this);
     playListView = new PlayListView(this);
 
-    rightWidget = new QWidget(this);
-    rightLayout = new QVBoxLayout(rightWidget);
-    rightLayout->setMargin(0);
 
     mainLayout->addWidget(leftWidget);
-    mainLayout->addWidget(rightWidget);
-
-    titleLabel = new QLabel(rightWidget);
-    titleLabel->setText("Filename\tLenght\tSuffix");
-    titleLabel->setMaximumWidth(300);
-    titleLabel->setMinimumWidth(200);
-    titleLabel->setMinimumHeight(10);
-    titleLabel->setProperty("class","titleLabel");
-
-    rightLayout->addWidget(titleLabel);
-    rightLayout->addWidget(playListView);
-    rightLayout->setSpacing(0);
-    rightLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinAndMaxSize);
+    mainLayout->addWidget(playListView);
 
     leftWidget->setMinimumWidth(700);
     leftLayout = new QVBoxLayout(leftWidget);
@@ -218,6 +204,12 @@ void IQPlayer::tryPlot()
 void IQPlayer::mousePressEvent(QMouseEvent *event)
 {
     qDebug()<<event;
+}
+
+void IQPlayer::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    emit windowSizeChanged();
 }
 
 void IQPlayer::onWindowsState()

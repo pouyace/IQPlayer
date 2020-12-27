@@ -1,21 +1,22 @@
 #include "ListModel.h"
 #include <QStringListModel>
 #include <QDebug>
-ListModel::ListModel(QWidget *parent) :
-    QAbstractListModel(parent)
+TableModel::TableModel(QWidget *parent) :
+    QAbstractTableModel(parent)
 {
 
 }
 
-ListModel::~ListModel()
+TableModel::~TableModel()
 {
 
 }
 
-void ListModel::append(const PlayListItem &item)
+void TableModel::append(const PlayListItem &item)
 {
     if(isRepepetiveItem(item))
         return;
+
     PlayListItem *temp = new PlayListItem(item);
     beginInsertRows(QModelIndex(),count(),count());
     listContainer.append(temp);
@@ -23,7 +24,7 @@ void ListModel::append(const PlayListItem &item)
     emit ModelContainerChanged("new file appended");
 }
 
-void ListModel::append(const QList<PlayListItem> &items)
+void TableModel::append(const QList<PlayListItem> &items)
 {
     if(items.count() == 0)
         return;
@@ -36,7 +37,7 @@ void ListModel::append(const QList<PlayListItem> &items)
     emit ModelContainerChanged("new list appended");
 }
 
-void ListModel::insert(int index, const QList<PlayListItem> &items)
+void TableModel::insert(int index, const QList<PlayListItem> &items)
 {
     if(items.count() == 0)
         return;
@@ -49,7 +50,7 @@ void ListModel::insert(int index, const QList<PlayListItem> &items)
     emit ModelContainerChanged("new list inserted");
 }
 
-bool ListModel::removeOne(PlayListItem *item)
+bool TableModel::removeOne(PlayListItem *item)
 {
     int row = listContainer.indexOf(item);
     if(row<0)
@@ -61,7 +62,7 @@ bool ListModel::removeOne(PlayListItem *item)
     return true;
 }
 
-int ListModel::removeAll(PlayListItem *item)
+int TableModel::removeAll(PlayListItem *item)
 {
     if(!listContainer.contains(item))
         return 0;
@@ -72,7 +73,7 @@ int ListModel::removeAll(PlayListItem *item)
     return removedItems;
 }
 
-void ListModel::removeAt(int index)
+void TableModel::removeAt(int index)
 {
     if(index < 0 || index >= count())
         return ;
@@ -82,12 +83,12 @@ void ListModel::removeAt(int index)
     emit ModelContainerChanged("file removed with index");
 }
 
-int ListModel::count() const
+int TableModel::count() const
 {
     return listContainer.count();
 }
 
-void ListModel::insert(int index, PlayListItem &item)
+void TableModel::insert(int index, PlayListItem &item)
 {
     if(isRepepetiveItem(item)){
         return;
@@ -99,34 +100,56 @@ void ListModel::insert(int index, PlayListItem &item)
     emit ModelContainerChanged("new file inserted");
 }
 
-int ListModel::rowCount(const QModelIndex &parent) const
+int TableModel::rowCount(const QModelIndex &parent) const
 {
     return count();
 }
 
-QVariant ListModel::data(const QModelIndex &index, int role) const
+QVariant TableModel::data(const QModelIndex &index, int role) const
 {
     if(!index.isValid())
         return QVariant();
     if(role==Qt::DisplayRole){
-    if(index.column() == 0)
-        return listContainer[index.row()]->absoluteFileName() + '\t' +  QString::number(listContainer[index.row()]->lenght) +
-                '\t' +listContainer[index.row()]->format;
+        if(index.column() == 0)
+            return listContainer[index.row()]->absoluteFileName();
+        if(index.column() == 1)
+            return QString::number(listContainer[index.row()]->lenght);
+        if(index.column() == 2)
+            return listContainer[index.row()]->format;
+    }
+    else if(role == Qt::TextAlignmentRole){
+        if(index.column() == 0)
+            return Qt::AlignLeft;
+        else
+            return Qt::AlignCenter;
     }
     return QVariant();
 }
 
-int ListModel::columnCount(const QModelIndex &parent) const
+int TableModel::columnCount(const QModelIndex &parent) const
 {
-    return 1;
+    return 3;
 }
 
-bool ListModel::setData(const QModelIndex &index, const QVariant &value, int role)
+QVariant TableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-
+    if(role == Qt::DisplayRole){
+        if(orientation == Qt::Horizontal){
+            switch (section) {
+            case 0: return tr("Filename");
+            case 1: return tr("Length");
+            case 2: return tr("Format");
+            }
+        }
+        else if(orientation == Qt::Vertical){
+            return section;
+        }
+    }
+    return QVariant();
 }
 
-bool ListModel::isRepepetiveItem(PlayListItem obj)
+
+bool TableModel::isRepepetiveItem(PlayListItem obj)
 {
     for(int i=0;i<listContainer.count();i++){
         if(*listContainer[i] == obj)

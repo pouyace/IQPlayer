@@ -4,11 +4,12 @@
 #include "ListModel.h"
 #include <QWidget>
 #include <QFileInfo>
+#include <QTableView>
 namespace Ui {
 class PlayListView;
 }
 
-class PlayListView : public QListView
+class PlayListView : public QTableView
 {
     Q_OBJECT
 
@@ -19,7 +20,7 @@ public:
     Q_ENUM(acceptableFormats)
 private:
     Ui::PlayListView *ui;
-    ListModel        *listModel  = nullptr;
+    TableModel        *listModel  = nullptr;
 
     // Methods
     void tryList();
@@ -28,6 +29,7 @@ private:
     void dragEnterEvent(QDragEnterEvent *e) override;
 
 public slots:
+    void onResizingViewList();
     void onModelListChanged(QString msg);
     void requestToPlayItem(const QModelIndex &item);
 

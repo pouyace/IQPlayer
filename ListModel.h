@@ -37,13 +37,13 @@ struct PlayListItem{
     }
 };
 
-class ListModel : public QAbstractListModel
+class TableModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit ListModel(QWidget *parent = nullptr);
-    ~ListModel();
+    explicit TableModel(QWidget *parent = nullptr);
+    ~TableModel();
     void insert(int index, PlayListItem& item);
     void append(const PlayListItem& item);
     void append(const QList<PlayListItem>& items);
@@ -56,7 +56,8 @@ protected:
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     virtual int columnCount(const QModelIndex &parent) const override;
-    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole)override;
+    virtual QVariant headerData(int section, Qt::Orientation orientation,
+                                    int role = Qt::DisplayRole) const override;
     //virtual Qt::DropActions supportedDropActions() const override;
     //virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
 private:
