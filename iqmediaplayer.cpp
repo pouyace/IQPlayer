@@ -1,5 +1,5 @@
-#include "voiceplayer.h"
-#include "ui_voiceplayer.h"
+#include "iqmediaplayer.h"
+#include "ui_iqmediaplayer.h"
 #include <QDebug>
 #include <QTimer>
 VoicePlayer::VoicePlayer(QWidget *parent) :

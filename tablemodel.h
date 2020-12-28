@@ -42,8 +42,10 @@ class TableModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
+    enum ModelRoles{FilePathRole = Qt::UserRole};
     explicit TableModel(QWidget *parent = nullptr);
     ~TableModel();
+    QVariant getData(const QModelIndex& index,int role) const;
     void insert(int index, PlayListItem& item);
     void append(const PlayListItem& item);
     void append(const QList<PlayListItem>& items);
@@ -58,6 +60,7 @@ protected:
     virtual int columnCount(const QModelIndex &parent) const override;
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                                     int role = Qt::DisplayRole) const override;
+    virtual QHash<int,QByteArray> roleNames() const override;
     //virtual Qt::DropActions supportedDropActions() const override;
     //virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
 private:

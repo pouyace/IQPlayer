@@ -17,23 +17,11 @@ PlayListView::PlayListView(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->setContentsMargins(0,2,2,2);
-    listModel = new TableModel(this);
-    this->setModel(listModel);
+    tableModel = new TableModel(this);
+    this->setModel(tableModel);
+
     setupProperties();
-    QHeaderView *horiz = this->horizontalHeader();
-    QHeaderView *vert = this->verticalHeader();
-    horiz->setProperty("orientation","Horizontal");
-    horiz->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Fixed);
-    vert->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-    horiz->setStretchLastSection(false);
-    horiz->setSectionResizeMode(QHeaderView::Fixed);
-    vert->hide();
-    horiz->setSectionsClickable(false);
-
-    connect(this,&QAbstractItemView::doubleClicked,this,&PlayListView::requestToPlayItem);
     tryList();
-
 }
 
 PlayListView::~PlayListView()
@@ -43,42 +31,61 @@ PlayListView::~PlayListView()
 
 void PlayListView::tryList()
 {
-    listModel->append(PlayListItem("Pouya",5,"best"));
-    listModel->append(PlayListItem("pa",6,"best"));
-    listModel->append(PlayListItem("df",7,"best"));
-    listModel->append(PlayListItem("sd",8,"best"));
+    tableModel->append(PlayListItem("Pouya",5,"best"));
+    tableModel->append(PlayListItem("pa",6,"best"));
+    tableModel->append(PlayListItem("df",7,"best"));
+    tableModel->append(PlayListItem("sd",8,"best"));
     QList<PlayListItem> items;
     PlayListItem item(PlayListItem("Posdfuya",9,"best"));
     items <<item;
-    listModel->append(items);
+    tableModel->append(items);
     QList<PlayListItem> items2;
     PlayListItem ie(PlayListItem("Poasuya",10,"best"));
     items2<<ie<<ie<<ie;
-    listModel->insert(2,items2);
+    tableModel->insert(2,items2);
 }
 
 void PlayListView::setupProperties()
 {
-    this->setMaximumWidth(300);
-    this->setMinimumWidth(260);
-    this->setMinimumHeight(100);
-    this->setProperty("class","playListWidget");
-    this->setDragEnabled(true);
-    this->setAcceptDrops(true);
-    this->setDragDropMode(QAbstractItemView::InternalMove);
-    this->setDropIndicatorShown(true);
-    this->setSelectionMode(QAbstractItemView::SingleSelection);
+    this->setContentsMargins     (0,2,2,2);
+    this->setMaximumWidth        (300);
+    this->setMinimumWidth        (260);
+    this->setMinimumHeight       (100);
+    this->setProperty            ("class","playListWidget");
+    this->setDragEnabled         (true);
+    this->setAcceptDrops         (true);
+    this->setDragDropMode        (QAbstractItemView::InternalMove);
+    this->setDropIndicatorShown  (true);
+    this->setSelectionMode       (QAbstractItemView::SingleSelection);
     this->resizeColumnsToContents();
-    this->setCornerButtonEnabled(false);
-    this->setSelectionBehavior(QAbstractItemView::SelectRows);
+    this->setCornerButtonEnabled (false);
+    this->setSelectionBehavior   (QAbstractItemView::SelectRows);
 
-    connect(listModel,&TableModel::ModelContainerChanged,this,&PlayListView::onModelListChanged);
+    this->horizontalHeader()->setStretchLastSection(false);;
+    this->horizontalHeader()->setProperty("orientation","Horizontal");
+    this->horizontalHeader()->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Fixed);
+    this->horizontalHeader()->setStretchLastSection(false);
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    this->horizontalHeader()->setSectionsClickable(false);
+
+    this->verticalHeader()->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+    this->verticalHeader()->hide();
+
+    connect(tableModel,&TableModel::ModelContainerChanged,this,&PlayListView::onModelListChanged);
+    connect(this,&QAbstractItemView::doubleClicked,this,&PlayListView::requestToPlayItem);
+
 }
 void PlayListView::dropEvent(QDropEvent *e)
 {
     qDebug()<<"drop event";
-    QString filePath = e->mimeData()->urls().first().path().remove(0,1);
-    listModel->append(PlayListItem(filePath));
+    QString path;
+    QList<QUrl> filePath = e->mimeData()->urls();
+    QListIterator<QUrl>urlListIterator(filePath);
+    while(urlListIterator.hasNext()){
+        path = urlListIterator.next().path().remove(0,1);
+        if(verifyFileFormat(path))
+            tableModel->append(PlayListItem(path,0));
+    }
 }
 
 void PlayListView::dragEnterEvent(QDragEnterEvent *e)
@@ -87,31 +94,36 @@ void PlayListView::dragEnterEvent(QDragEnterEvent *e)
     if(e->mimeData()->hasUrls()){
         QString filePath = e->mimeData()->urls().first().path().remove(0,1);
         qDebug()<<"this is the filePath:"<<filePath;
-        QFileInfo fileInfoChecker(filePath);
-        QString suffix = fileInfoChecker.suffix();
-        isFile = fileInfoChecker.isFile();
-        exists = fileInfoChecker.exists();
-        readable = fileInfoChecker.isReadable();
-        if(isFile && exists && readable){
-            QMetaEnum metaEnum = QMetaEnum::fromType<acceptableFormats>();
-            switch (metaEnum.keyToValue(suffix.toStdString().c_str())) {
-            case acceptableFormats::NotValid:break;
-            case acceptableFormats::txt:e->acceptProposedAction();break;
-            case acceptableFormats::mp3:e->acceptProposedAction();break;
-            case acceptableFormats::data:e->acceptProposedAction();break;
-            default:break;
-            }
-        }
-        else{
-            qDebug()<<"isFile:"<<isFile;
-            qDebug()<<"exists:"<<exists;
-            qDebug()<<"isreadable:"<<readable;
-            qDebug()<<"suffix"<<suffix;
-        }
+        if(verifyFileFormat(filePath))
+            e->acceptProposedAction();
     }
     else{
         qDebug()<<"Not Url";
     }
+}
+
+bool PlayListView::verifyFileFormat(QString filePath)
+{
+    bool exists,readable,dir,isFile;
+    QFileInfo fileInfoChecker(filePath);
+    isFile = fileInfoChecker.isFile();
+    exists = fileInfoChecker.exists();
+    readable = fileInfoChecker.isReadable();
+    QString suffix = fileInfoChecker.suffix();
+    QMetaEnum metaEnum = QMetaEnum::fromType<acceptableFormats>();
+    switch (metaEnum.keyToValue(suffix.toStdString().c_str())) {
+    case acceptableFormats::NotValid:   return false;
+    case acceptableFormats::txt:        return true;
+    case acceptableFormats::mp3:        return true;
+    case acceptableFormats::data:       return true;
+    default:
+    {   qDebug()<<"isFile:"<<isFile;
+        qDebug()<<"exists:"<<exists;
+        qDebug()<<"isreadable:"<<readable;
+        qDebug()<<"suffix"<<suffix;return false;
+    }
+    }
+    return false;
 }
 
 void PlayListView::onResizingViewList()
@@ -130,14 +142,18 @@ void PlayListView::onModelListChanged(QString msg)
 
 void PlayListView::requestToPlayItem(const QModelIndex &item)
 {
-//    int No = -1;
-//    for(int i=0; i<this->listModel->count(); i++){
-//        if(this->listModel->index(i) == item){
-//            No = i;
-//            break;
-//        }
-//    }
-//    if(No >= 0){
-//        playingItemListRequested(No);
-//    }
+    QVariant filePath = (this->tableModel->getData(item,TableModel::FilePathRole));
+    qDebug()<<"filePath= " << filePath.toString();
+    emit playingItemListRequested(filePath.toString());
+}
+
+void PlayListView::onOpenFiles(QStringList files)
+{
+    QString file;
+    QStringListIterator filesIterator(files);
+    while(filesIterator.hasNext()){
+        file = filesIterator.next();
+        if(verifyFileFormat(file))
+            tableModel->append(PlayListItem(file,0));
+    }
 }

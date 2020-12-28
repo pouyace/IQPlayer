@@ -3,6 +3,8 @@
 #include <QMetaEnum>
 #include <standardwindowcofactor.h>
 #include <QDebug>
+#include <QFileDialog>
+//#include "AMRComplex/amrdetails.h"
 FFTGroupBox::FFTGroupBox(QWidget *parent) :
     QGroupBox(parent),
     ui(new Ui::FFTGroupBox)
@@ -38,6 +40,7 @@ FFTGroupBox::FFTGroupBox(QWidget *parent) :
     connect(ui->openFilesPushButton,    &QPushButton::clicked                               ,this,&FFTGroupBox::onOpenFilesButtonClicked);
     connect(ui->fullSpanPushButton,     &QCheckBox::stateChanged                            ,this,&FFTGroupBox::onFullSpanStateChanged);
     //onAverageChanged(1);
+    //amrDetails = new AMRDetails(this);
 }
 
 FFTGroupBox::~FFTGroupBox()
@@ -95,12 +98,17 @@ void FFTGroupBox::onAverageChanged(int average)
 
 void FFTGroupBox::onOpenFilesButtonClicked()
 {
-    qDebug()<<"OpenFiles";
+    QStringList files = QFileDialog::getOpenFileNames(this,"select files to play");
+    emit openFilesRequested(files);
 }
 
 void FFTGroupBox::onDoAMRButtonClicked()
 {
     qDebug()<<"Do AMR";
+    if(amrDetails){
+        //amrDetails->show();
+        //amrDetails->raise();
+    }
 }
 
 void FFTGroupBox::onFullSpanStateChanged(bool state)

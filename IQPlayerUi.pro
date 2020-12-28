@@ -16,35 +16,33 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    ListModel.cpp \
     ddcgroupbox.cpp \
     fftgroupbox.cpp \
     informationgroupbox.cpp \
-    iqplayercontroller.cpp \
+    iqmediaplayer.cpp \
     main.cpp \
     iqplayer.cpp \
     playlistview.cpp \
     qcustomplot.cpp \
-    voiceplayer.cpp
+    tablemodel.cpp
 
 HEADERS += \
-    ListModel.h \
     ddcgroupbox.h \
     fftgroupbox.h \
     informationgroupbox.h \
+    iqmediaplayer.h \
     iqplayer.h \
-    iqplayercontroller.h \
     playlistview.h \
     qcustomplot.h \
-    voiceplayer.h
+    tablemodel.h
 
 FORMS += \
     ddcgroupbox.ui \
     fftgroupbox.ui \
     informationgroupbox.ui \
+    iqmediaplayer.ui \
     iqplayer.ui \
-    playlistview.ui \
-    voiceplayer.ui
+    playlistview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

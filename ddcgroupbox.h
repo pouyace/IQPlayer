@@ -1,6 +1,7 @@
 #ifndef DDCGROUPBOX_H
 #define DDCGROUPBOX_H
 #include <barradiobutton.h>
+#include <colorbutton.h>
 #include <QGroupBox>
 
 namespace Ui {
@@ -28,6 +29,7 @@ public:
     DemodulationType demodulationType();
 private:
     Ui::DDCGroupBox *ui;
+    ColorButton *colorButton = nullptr;
     qint64 _spanCenter;
     qint64 _ddcCenter;
     double _demodGain;
@@ -46,7 +48,7 @@ private slots:
     void onDDCCenterValueChanged    (double   value);
     void onDemodGainValueChanged    (double   value);
     void onExportButtonClicked();
-    void onColorButtonClicked();
+    void onColorButtonClicked(QColor color);
 signals:
 
     /*******DDC******/

@@ -9,9 +9,9 @@
 #include <QGridLayout>
 #include <barradiobutton.h>
 #include "ddcgroupbox.h"
-#include "ListModel.h"
+#include "tablemodel.h"
 #include "fftgroupbox.h"
-#include "voiceplayer.h"
+#include "iqmediaplayer.h"
 #include "playlistview.h"
 #include "informationgroupbox.h"
 QT_BEGIN_NAMESPACE

@@ -1,7 +1,7 @@
 #ifndef PLAYLISTVIEW_H
 #define PLAYLISTVIEW_H
 #include <QListView>
-#include "ListModel.h"
+#include "tablemodel.h"
 #include <QWidget>
 #include <QFileInfo>
 #include <QTableView>
@@ -20,21 +20,23 @@ public:
     Q_ENUM(acceptableFormats)
 private:
     Ui::PlayListView *ui;
-    TableModel        *listModel  = nullptr;
+    TableModel        *tableModel  = nullptr;
 
     // Methods
     void tryList();
     void setupProperties();
     void dropEvent(QDropEvent *e) override;
     void dragEnterEvent(QDragEnterEvent *e) override;
+    bool verifyFileFormat(QString filePath);
 
 public slots:
     void onResizingViewList();
     void onModelListChanged(QString msg);
     void requestToPlayItem(const QModelIndex &item);
+    void onOpenFiles(QStringList files);
 
 signals:
-    void playingItemListRequested(int itemNumber);
+    void playingItemListRequested(QString filePath);
 };
 
 #endif // PLAYLISTVIEW_H

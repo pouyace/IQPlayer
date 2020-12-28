@@ -30,7 +30,8 @@ void IQPlayer::setProperties()
 
 void IQPlayer::setupConnections()
 {
-    connect(this,&IQPlayer::windowSizeChanged,playListView,&PlayListView::onResizingViewList);
+    connect(this        ,&IQPlayer::windowSizeChanged,                  playListView,&PlayListView::onResizingViewList);
+    connect(fftGroupBox ,&FFTGroupBox::openFilesRequested,              playListView,&PlayListView::onOpenFiles);
     connect(plot1       ,&QCustomPlot::mouseDoubleClick,                this,&IQPlayer::plot1RescaleRequested);
     connect(plot2       ,&QCustomPlot::mouseDoubleClick,                this,&IQPlayer::plot2RescaleRequested);
     connect(action      ,&QAction::toggled,                             this,&IQPlayer::onWindowsState);

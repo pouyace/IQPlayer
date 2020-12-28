@@ -1,7 +1,8 @@
 #ifndef FFTGROUPBOX_H
 #define FFTGROUPBOX_H
 #include <QGroupBox>
-
+class AMRDetails;
+class AMRDeciderC;
 namespace Ui {
 class FFTGroupBox;
 }
@@ -30,6 +31,8 @@ private:
     int _NFFT = -1;
     WindowType _windowType = Blackman_Symmetric;
     WindowMethod _winMethod = nullptr;
+    AMRDetails *amrDetails  =   nullptr;
+    //AMRDeciderC *amrDecider =   nullptr;
 
     //Private Methods
     void registerWindowMethod(WindowType winType,WindowMethod winMethod);
@@ -47,6 +50,7 @@ signals:
     void nfftChanged(int NFFT);
     void playFrequencyChanged(int playFrequency);
     void windowTypeChanged();
+    void openFilesRequested(QStringList files);
 
 };
 

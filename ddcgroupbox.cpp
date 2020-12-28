@@ -28,12 +28,18 @@ DDCGroupBox::DDCGroupBox(QWidget *parent) :
     ui->demodulationBarRadioButton->setChecked(0);
     ui->demodulationBarRadioButton->setButtonsSize(QSize(70,22));
 
+    colorButton = new ColorButton(this);
+    colorButton->setColor(QColor(100,100,255));
+    colorButton->setMaximumSize(QSize(70,22));
+    colorButton->setProperty("class","colorButton");
+    ui->horizontalLayout_2->addWidget(colorButton);
+
     connect(ui->barRadioButton,             &BarRadioButton::currentValueChanged                ,this,&DDCGroupBox::onBandwidthValueChange);
     connect(ui->demodulationBarRadioButton, &BarRadioButton::currentValueChanged                ,this,&DDCGroupBox::onDemodulationValueChanged);
     connect(ui->spanCenterDoubleSpinBox,    QOverload<double>::of(&QDoubleSpinBox::valueChanged),this,&DDCGroupBox::onSpanCenterValueChanged);
     connect(ui->DDCCenterDoubleSpinBox,     QOverload<double>::of(&QDoubleSpinBox::valueChanged),this,&DDCGroupBox::onDDCCenterValueChanged);
     connect(ui->DemodGainDoubleSpinBox,     QOverload<double>::of(&QDoubleSpinBox::valueChanged),this,&DDCGroupBox::onDemodGainValueChanged);
-    connect(ui->colorselectPushButton,      &QPushButton::clicked                               ,this,&DDCGroupBox::onColorButtonClicked);
+    connect(colorButton,                    &ColorButton::colorChanged                          ,this,&DDCGroupBox::onColorButtonClicked);
     connect(ui->ExportPushButton,           &QPushButton::clicked                               ,this,&DDCGroupBox::onExportButtonClicked);
 }
 
@@ -137,7 +143,8 @@ void DDCGroupBox::onExportButtonClicked()
     qDebug()<<"Export";
 }
 
-void DDCGroupBox::onColorButtonClicked()
+void DDCGroupBox::onColorButtonClicked(QColor color)
 {
-    qDebug()<<"Color";
+
+    colorButton->setColor(color);
 }

@@ -1,15 +1,19 @@
-#include "ListModel.h"
+#include "tablemodel.h"
 #include <QStringListModel>
 #include <QDebug>
 TableModel::TableModel(QWidget *parent) :
     QAbstractTableModel(parent)
 {
-
 }
 
 TableModel::~TableModel()
 {
 
+}
+
+QVariant TableModel::getData(const QModelIndex &index, int role) const
+{
+     return this->data(index,role);
 }
 
 void TableModel::append(const PlayListItem &item)
@@ -21,7 +25,7 @@ void TableModel::append(const PlayListItem &item)
     beginInsertRows(QModelIndex(),count(),count());
     listContainer.append(temp);
     endInsertRows();
-    emit ModelContainerChanged("new file appended");
+    emit ModelContainerChanged("new file appended:"+temp->filePath);
 }
 
 void TableModel::append(const QList<PlayListItem> &items)
@@ -93,7 +97,6 @@ void TableModel::insert(int index, PlayListItem &item)
     if(isRepepetiveItem(item)){
         return;
     }
-    PlayListItem *temp = new PlayListItem(item);
     beginInsertRows(QModelIndex(),index,index + 1);
     listContainer.insert(index,new PlayListItem(item));
     endInsertRows();
@@ -123,6 +126,10 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
         else
             return Qt::AlignCenter;
     }
+    else if(role == FilePathRole){
+        return listContainer[index.row()]->filePath;
+    }
+
     return QVariant();
 }
 
@@ -137,8 +144,8 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
         if(orientation == Qt::Horizontal){
             switch (section) {
             case 0: return tr("Filename");
-            case 1: return tr("Length");
-            case 2: return tr("Format");
+            case 1: return tr("Length"  );
+            case 2: return tr("Format"  );
             }
         }
         else if(orientation == Qt::Vertical){
@@ -146,6 +153,15 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
         }
     }
     return QVariant();
+}
+
+QHash<int, QByteArray> TableModel::roleNames() const
+{
+    QHash <int,QByteArray>returnData;
+    QByteArray valueData;
+
+    returnData.insert(FilePathRole,"FilePath");
+    return returnData;
 }
 
 
