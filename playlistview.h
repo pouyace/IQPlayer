@@ -5,10 +5,14 @@
 #include <QWidget>
 #include <QFileInfo>
 #include <QTableView>
+#include <QDebug>
+#include <QLabel>
 namespace Ui {
 class PlayListView;
 }
 
+class TableItemDelegate;
+class DragLabelItem;
 class PlayListView : public QTableView
 {
     Q_OBJECT
@@ -20,13 +24,21 @@ public:
     Q_ENUM(acceptableFormats)
 private:
     Ui::PlayListView *ui;
-    TableModel        *tableModel  = nullptr;
-
+    TableModel          *tableModel     = nullptr;
+    QMouseEvent         *mouseEvent     = nullptr;
+    TableItemDelegate   *itemDelegate   = nullptr;
+    DragLabelItem       *dragLabel      = nullptr;
     // Methods
     void tryList();
     void setupProperties();
+    void handleDragging();
+    void swapItems();
+    void handleReleasing();
     void dropEvent(QDropEvent *e) override;
-    void dragEnterEvent(QDragEnterEvent *e) override;
+    void dragEnterEvent(QDragEnterEvent *e) override;    
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
     bool verifyFileFormat(QString filePath);
 
 public slots:
@@ -36,7 +48,9 @@ public slots:
     void onOpenFiles(QStringList files);
 
 signals:
-    void playingItemListRequested(QString filePath);
+    void mousePositionUpdated(int x, int y);
+    void mouseReleased();
+    void playingItemListRequested(QString filePath,int row);
 };
 
 #endif // PLAYLISTVIEW_H

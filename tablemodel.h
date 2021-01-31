@@ -31,11 +31,19 @@ struct PlayListItem{
         else
             return false;
     }
+    friend QDataStream & operator <<(QDataStream &out,const PlayListItem &myObj){
+        out<<myObj.filePath;
+        out<<myObj.lenght;
+        out<<myObj.format;
+        return out;
+    }
     QString absoluteFileName(){
         QFileInfo fileInfoChecker(filePath);
         return fileInfoChecker.fileName().remove(".txt");
     }
+
 };
+Q_DECLARE_METATYPE(PlayListItem)
 
 class TableModel : public QAbstractTableModel
 {
@@ -53,7 +61,11 @@ public:
     void removeAt(int index);
     bool removeOne(PlayListItem *item);
     int  removeAll(PlayListItem *item);
+    void freeTable();
     int count() const;
+    bool swapRows(int i,int j);
+    PlayListItem* dataAtIndex(int row);
+    //virtual Qt::DropActions supportedDropActions() const override;
 protected:
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -61,8 +73,7 @@ protected:
     virtual QVariant headerData(int section, Qt::Orientation orientation,
                                     int role = Qt::DisplayRole) const override;
     virtual QHash<int,QByteArray> roleNames() const override;
-    //virtual Qt::DropActions supportedDropActions() const override;
-    //virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
+
 private:
     QList <PlayListItem*> listContainer;
 

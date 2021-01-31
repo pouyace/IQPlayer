@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ddcgroupbox.cpp \
+    draghandler.cpp \
     fftgroupbox.cpp \
     informationgroupbox.cpp \
     iqmediaplayer.cpp \
@@ -24,16 +25,19 @@ SOURCES += \
     iqplayer.cpp \
     playlistview.cpp \
     qcustomplot.cpp \
+    tableitemdelegate.cpp \
     tablemodel.cpp
 
 HEADERS += \
     ddcgroupbox.h \
+    draghandler.h \
     fftgroupbox.h \
     informationgroupbox.h \
     iqmediaplayer.h \
     iqplayer.h \
     playlistview.h \
     qcustomplot.h \
+    tableitemdelegate.h \
     tablemodel.h
 
 FORMS += \

@@ -77,6 +77,17 @@ int TableModel::removeAll(PlayListItem *item)
     return removedItems;
 }
 
+void TableModel::freeTable()
+{
+    if(!listContainer.count())
+        return;
+    QListIterator<PlayListItem*>a(listContainer);
+    while(a.hasNext()){
+        removeAll(a.next());
+    }
+    emit ModelContainerChanged("all list members were removed");
+}
+
 void TableModel::removeAt(int index)
 {
     if(index < 0 || index >= count())
@@ -149,7 +160,7 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
             }
         }
         else if(orientation == Qt::Vertical){
-            return section;
+            return "";
         }
     }
     return QVariant();
@@ -164,6 +175,21 @@ QHash<int, QByteArray> TableModel::roleNames() const
     return returnData;
 }
 
+bool TableModel::swapRows(int i, int j)
+{
+    if(i<count() && j<count() && i>=0 && j>=0){
+        listContainer.swapItemsAt(i ,j);
+        return true;
+    }
+    return false;
+}
+
+PlayListItem *TableModel::dataAtIndex(int row)
+{
+    if(row == -1)
+        return nullptr;
+    return listContainer.at(row);
+}
 
 bool TableModel::isRepepetiveItem(PlayListItem obj)
 {

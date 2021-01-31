@@ -30,6 +30,7 @@ void IQPlayer::setProperties()
 
 void IQPlayer::setupConnections()
 {
+    connect(playListView,&PlayListView::playingItemListRequested,       player      ,&VoicePlayer::requestToPlay);
     connect(this        ,&IQPlayer::windowSizeChanged,                  playListView,&PlayListView::onResizingViewList);
     connect(fftGroupBox ,&FFTGroupBox::openFilesRequested,              playListView,&PlayListView::onOpenFiles);
     connect(plot1       ,&QCustomPlot::mouseDoubleClick,                this,&IQPlayer::plot1RescaleRequested);
@@ -200,11 +201,6 @@ void IQPlayer::tryPlot()
     plot1->replot();
 
     ////////////////////////////////////////////////////////////////
-}
-
-void IQPlayer::mousePressEvent(QMouseEvent *event)
-{
-    qDebug()<<event;
 }
 
 void IQPlayer::resizeEvent(QResizeEvent *event)

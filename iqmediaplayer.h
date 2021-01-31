@@ -20,9 +20,20 @@ private:
     void setupConncetion();
     bool repeatState = 1;
     bool pauseState   = 1;
+    bool hasAnythingToPlay = false;
+    int currentFileIndex = 0;
+    QString currentFilePath = "";
+
+private slots:
+    void stop();
+    void play();
+    void next();
+    void previous();
+
 public slots:
     void updateRepeatStat();
     void updatePauseStat();
+    void requestToPlay(QString path,int index);
 
 signals:
     void paused();
@@ -31,8 +42,8 @@ signals:
     void repeatModeChanged();
     void horizontalRescaleRequested();
     void verticalRescaleRequested();
-    void playNextRequested();
-    void playPreviousRequested();
+    void playNextRequested(int index);
+    void playPreviousRequested(int index);
 
 
 };

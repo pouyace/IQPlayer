@@ -4,7 +4,6 @@
 #include <standardwindowcofactor.h>
 #include <QDebug>
 #include <QFileDialog>
-//#include "AMRComplex/amrdetails.h"
 FFTGroupBox::FFTGroupBox(QWidget *parent) :
     QGroupBox(parent),
     ui(new Ui::FFTGroupBox)
@@ -39,8 +38,9 @@ FFTGroupBox::FFTGroupBox(QWidget *parent) :
     connect(ui->doAMRPushButton,        &QPushButton::clicked                               ,this,&FFTGroupBox::onDoAMRButtonClicked);
     connect(ui->openFilesPushButton,    &QPushButton::clicked                               ,this,&FFTGroupBox::onOpenFilesButtonClicked);
     connect(ui->fullSpanPushButton,     &QCheckBox::stateChanged                            ,this,&FFTGroupBox::onFullSpanStateChanged);
-    //onAverageChanged(1);
-    //amrDetails = new AMRDetails(this);
+
+    ui->doAMRPushButton->setProperty("class","GeneralPushButton");
+    ui->openFilesPushButton->setProperty("class","GeneralPushButton");
 }
 
 FFTGroupBox::~FFTGroupBox()

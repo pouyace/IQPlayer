@@ -52,7 +52,6 @@ private:
     void setupConnections();
     void setupPlots();
     void closeEvent(QCloseEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private slots:

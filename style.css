@@ -46,7 +46,7 @@ QWidget.playListWidget{
 background-color:rgba(40,40,40,1);
 color:rgba(240,240,240,0.7);
 }
-IQPlayer QPushButton{
+IQPlayer QPushButton.GeneralPushButton{
 background-color: qlineargradient(spread:pad, x1:0, y1:0.409, x2:0.639, y2:0.949, stop:0 rgba(60, 60, 60, 255), stop:0.494382 rgba(62, 62, 62, 255), stop:1 rgba(58, 58, 58, 255));
 border-radius:4px;
 border:3px solid rgba(80,80,80,0.9);
@@ -106,10 +106,20 @@ background-color:transparent;
 border:none;
 margin-bottom:5px;
 }
+IQPlayer QHeaderView[orientation = Vertical]::section{
+background-color:transparent;
+/*border:none;*/
+margin-bottom:5px;
+margin:6px;
+padding:5px;
+}
 VoicePlayer QWidget.VoicePlayerWidget{
 border:7px solid rgba(75,75,75,0.9);
 border-radius:5px;
 padding:20px;
+}
+DDCGroupBox QWidget{
+background-color:rgb(50,50,50);
 }
 
 /***************************************BOLDLCD*****************************************/
@@ -1939,13 +1949,7 @@ font: 12pt "Calibri";
 font-weight:bold;
 border-bottom:2px solid rgb(7,147,169);
 }
-DeviceSidePanel[isShowing = "true"] QWidget.receiversList{
-border:none;
-border:5px solid /*rgba(0,0,0,100)*/red;
-}
-DeviceSidePanel[isShowing = "false"] QWidget.receiversList{
-border:0px;
-}
+
 /**************************************************************************/
 /************************************HandoffSidePanel*************************************************************/
 HandoffSidePanel QToolButton.RequestButton{
@@ -1988,13 +1992,6 @@ color:rgb(7,147,169);
 font: 12pt "Calibri";
 font-weight:bold;
 border-bottom:2px solid rgb(7,147,169);
-}
-HandoffSidePanel[isShowing = "true"] QWidget.receiversList{
-border:none;
-border:5px solid /*rgba(0,0,0,100)*/red;
-}
-HandoffSidePanel[isShowing = "false"] QWidget.receiversList{
-border:0px;
 }
 /**************************BarRadioButton*************************************/
 BarRadioButton QLabel{
@@ -2391,371 +2388,6 @@ background-color: green;
 }
 /*************************************************************/
 /*******************Container Widget***********************/
-QWidget .titleSmallPart
-{
-font: 75 10pt "calibri";
-color:#b0e3f9;
-font-weight:bold;
-border:none;
-padding-left:5px;
-background-color: /*rgba(30,31,37,180)*/#14161a;
-border-top-right-radius: 5px;
-border-top-left-radius:  5px;
-border-bottom:1px solid qlineargradient(spread:pad, x1:0, y1:0.006, x2:1, y2:0, stop:0 rgba(0, 0, 0, 216), stop:0.5 rgba(13,161,231, 180), stop:1 rgba(2, 8, 8, 214)) ;
-}
-
-.userManagmentWidget
-{
-/*border:none;
-background-color:/* rgb(15, 18, 30)*/none;
-/*color:#74767c;*/
-/*font: 12pt "Calibri";*/
-/*padding-right:5px;*/
-font-weight:bold;
-font-family:"Times New Roman";
-border:none;
-background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:1, stop:0 rgba(14, 139, 223, 240), stop:1 rgba(70, 219, 239, 200));
-border-top:1px solid #0f1626;
-border-right:1px solid #0f1626;
-border-bottom:1px solid #000000;
-border-left:1px solid #000000;
-}
-
-QWidget .inPartReceiver
-{
-border:none;
-background-color: #1e1f25;
-border-right:1px solid #131317;
-border-bottom:1px solid #131317;
-border-top-right-radius: 5px;
-border-top-left-radius:  5px;
-/*border-bottom:2px solid #2a3566;*/
-
-}
-QWidget .firstColor
-{
-border:none;
-background-color: #1e1f25;
-}
-QWidget .inPartReceiver::title
-{
-subcontrol-origin: margin;
-subcontrol-position: top left;
-padding-left: 0.1ex;
-padding-right: 0.1ex;
-margin-top: -6px;
-font: 75 12pt "calibri";
-color:#b0e3f9;
-font-weight:bold;
-}
-
-QWidget .rightPos
-{
-/*background-color:rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-}
-
-QSplitter QWidget .rightPos
-{
-/*background-color:rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-}
-
-.rightPos
-{
-/*background-color:rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-}
-QScrollArea QWidget .rightPos
-{
-/*background-color: rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-
-}
-QScrollArea .rightPos
-{
-/*background-color: rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-
-}
-.settingRole
-{
-background-color:rgb(15,15,17);
-}
-QWidget .scoutCover
-{
-/*background-color:rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-border:none;
-}
-QTabWidget QWidget[scoutCover = "sC"]
-{
-/*background-color: rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-
-border:none;
-}
-QStackedWidget QWidget .scoutCover
-{
-/*background-color:rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-
-border:none;
-}
-
-QWidget[loginWdg = "yes"]{
-background-color:rgba(0, 0, 0 , 255);
-}
-QWidget[fadeWdg = "yes"]{
-background-color:rgba(0, 0, 0 , 125);
-}
-/*QWidget[inIconBtn = "mainBtn"]
-{
-border:none;
-background-color: rgba(0,0,0,100);
-min-width:30px;
-min-height:30px;
-border-radius:15px;
-padding-top:1px;
-}*/
-QWidget .valuePB
-{
-border:none;
-background-color: none;
-color:#51cfff;
-font: 75 12pt "Calibri";
-font-weight:bold;
-padding-left:2px;
-}
-QWidget .TitleUnit{
-color:#F9BF3B;
-padding:0px;
-font-family:"Calibri";
-font-weight:bold;
-border:none;
-background-color:none;
-}
-QWidget .containerUiDDC
-{
-background-color: rgba(2, 5, 15, 80);
-border:none;
-border-left:3px solid rgb(65,178,204);
-/*border-bottom-left-radius:  5px;*/
-}
-
-
-QWidget .QuantityReportWidget
-{
-background-color:rgba(0,0,0,255);
-border:none;
-border-radius:10px;
-}
-QWidget .free
-{
-color: rgb(32, 166, 110);
-min-height:30px;
-min-width:30px;
-font-size:12pt;
-font-weight:bold;
-border:none;
-padding-right:15px;
-background-color:#0b0c10;
-/*border-bottom:1px solid qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0 rgba(43, 255, 209, 180), stop:1 rgba(43, 255, 209, 50));*/
-}
-
-QWidget .used
-{
-color:#cf000f;
-min-height:30px;
-min-width:30px;
-border:none;
-font-size:12pt;
-font-weight:bold;
-border:none;
-padding-right:15px;
-background-color:#0b0c10;
-/*border-bottom:1px solid qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0 rgba(207, 0, 15, 180), stop:1 rgba(207, 0, 15, 50));*/
-}
-
-QWidget .selfme
-{
-color:rgb(82,179,217);
-min-height:30px;
-min-width:30px;
-border:none;
-font-size:12pt;
-font-weight:bold;
-padding-right:15px;
-background-color:#0b0c10;
-/*border-bottom:1px solid qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0 rgba(43, 156, 255, 180), stop:1 rgba(44, 210, 255, 50));*/
-}
-
-QWidget .labelStyle
-{
-color:#bdc3c7;
-font-size:12pt;
-font-family:"calibri";
-/*padding-right:15px;*/
-}
-QWidget.quantityReportWidget{
-background-color:rgba(0,0,0,155);
-border:none;
-border-radius:15px;
-}
-QWidget.quantityReportWidget[boldStyle = "true"]{
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(54, 99, 254, 100) , stop:1 rgba(54, 99, 254, 0));
-}
-DeviceSidePanelContainer QWidget.ContainerSidePanel
-{
-background-color: rgb(31, 33, 40);
-
-}
-
-QWidget .userProfile
-{
-background-color: red;
-border:1px solid red;
-}
-
-QWidget[relatedToUserWdg = "yes"]
-{
-background-color: rgba(25,26,38,180);
-border-radius:3px;
-}
-QWidget[titleBarWdg = "yes"]{
-border:1px solid #00a2d5;
-border-top-width:0px;
-border-left-width:0px;
-border-right-width:0px;
-background-color:rgba(0,162,213,185);
-
-}
-QWidget[menuUser = "yes"]
-{
-background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0.982955, stop:0 rgba(29, 42, 84, 255), stop:0.505682 rgba(30, 43, 85, 255), stop:1 rgba(29, 42, 84, 255));
-}
-QWidget[chatWdg = "yes"]{
-border:1px solid #00a2d5;
-border-radius:3px;
-background-color:rgba(7,16,32,185);
-
-}
-
-
-QWidget.topShow{
-background-color:/*rgba(0,0,0,100)*/red;
-border:none;
-}
-
-.middleWidget
-{
-/*background-color:rgb(15,15,17);*/
-background-color:rgba(0,0,0,180);
-border:none;
-border-bottom:2px solid qlineargradient(spread:pad, x1:1, y1:0.948864, x2:0, y2:1, stop:0 rgba(54, 99, 253, 150), stop:0.511364 rgba(54, 99, 253, 50), stop:1 rgba(54, 99, 253, 0));
-border-right:2px solid rgba(54,99,253,150);
-}
-QWidget .quantityReportSingle
-{
-border:none;
-border-right:1px solid rgb(71,71,81);
-}
-
-
-QWidget[parentGif = "pg"]
-{
-background-color:rgb(0,0,0);
-border:none;
-}
-QScrollArea QWidget .DefaultTableArea
-{
-border:none;
-background-color: #1e1f25;
-}
-QScrollArea .DefaultTableArea
-{
-border:none;
-background-color: #1e1f25;
-}
-QWidget .DefaultTableArea
-{
-border:none;
-background-color: #1e1f25;
-}
-.PrefixedFrequenciesTable QWidget[widgetUsed = "defaultTable"]
-{
-border:none;
-background-color: #1e1f25;
-border-bottom:1px solid black;
-}
-.ReportWCodeWidget
-{
-background-color:rgb(15,15,17);
-border:none;
-padding:15px;
-color:#fff;
-font-size:10pt;
-font-weight:bold;
-font-family:"calibri";
-
-}
-QWidget[widgetPosition = "top"]
-{
-background-color: rgb(45, 46, 50);
-/*border-bottom:1px solid #131317;*/
-
-}
-QWidget[widgetPosition = "right"]
-{
-/*background-color:rgb(37,41,54);*/
-border:none;
-background-color:rgb(15,15,17);
-
-}
-QScrollArea QWidget [widgetPosition = "right"]
-{
-/*background-color: rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-
-}
-QScrollArea[widgetPosition = "right"]
-{
-/*background-color: rgb(37,41,54);*/
-background-color:rgb(15,15,17);
-
-}
-
-QWidget[widgetUsed = "header"]
-{
-border:none;
-/*border-right:1px solid #131317;
-border-bottom:1px solid #131317;*/
-}
-QWidget[widgetUsed = "receiversList"]
-{
-border:none;
-background-color: rgb(37, 41, 54);
-/*border-right:1px solid #131317;*/
-/*border-bottom:1px solid #131317;*/
-}
-QWidget[widgetUsed = "inPartReceiver"]
-{
-border:none;
-background-color: #1e1f25;
-border-right:1px solid #131317;
-border-bottom:1px solid #131317;
-}
-
-QWidget[widgetUsed = "mainPartDisplay"]
-{
-border:none;
-background-color: #161719;
-}
-QWidget[widgetUsed = "quantitiesData"]
-{
-background-color: rgb(31, 33, 40);
-border-bottom:2px solid red;
-}
 
 
 .idDDC{
@@ -3376,15 +3008,6 @@ font-weight:bold;
 font-family:"Times New Roman";
 border:none;
 background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(70, 219, 239, 255), stop:1 rgba(14, 139, 223, 255));
-}
-QWidget[containerStatusSplash = "css"]
-{
-/*border:2px solid #171516;
-background-color: rgb(47, 42, 46);*/
-background-color: rgba(11, 18, 50,220);
-border-top:2px solid #0b4e8e;
-border-bottom:1px solid #0c2849;
-border-radius:2px;
 }
 QLabel[demoTitle = "dt"]
 {

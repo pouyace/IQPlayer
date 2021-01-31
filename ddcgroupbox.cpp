@@ -30,7 +30,7 @@ DDCGroupBox::DDCGroupBox(QWidget *parent) :
 
     colorButton = new ColorButton(this);
     colorButton->setColor(QColor(100,100,255));
-    colorButton->setMaximumSize(QSize(70,22));
+    colorButton->setMaximumSize(QSize(45,20));
     colorButton->setProperty("class","colorButton");
     ui->horizontalLayout_2->addWidget(colorButton);
 
@@ -41,6 +41,11 @@ DDCGroupBox::DDCGroupBox(QWidget *parent) :
     connect(ui->DemodGainDoubleSpinBox,     QOverload<double>::of(&QDoubleSpinBox::valueChanged),this,&DDCGroupBox::onDemodGainValueChanged);
     connect(colorButton,                    &ColorButton::colorChanged                          ,this,&DDCGroupBox::onColorButtonClicked);
     connect(ui->ExportPushButton,           &QPushButton::clicked                               ,this,&DDCGroupBox::onExportButtonClicked);
+
+    ui->ExportPushButton->setProperty("class","GeneralPushButton");
+    colorButton->setProperty("class","ColorWidget");
+    qDebug()<<typeid (colorButton).name() ;
+
 }
 
 DDCGroupBox::~DDCGroupBox()
