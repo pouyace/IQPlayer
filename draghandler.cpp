@@ -3,14 +3,13 @@
 DragLabelItem::DragLabelItem(QWidget *parent, QAbstractItemDelegate *itemDelegate):
     QWidget(parent),
     itemInfo(this),
-    _defaultDelegate(itemDelegate)
+    _DefaultDelegate(itemDelegate)
 {
     horizontalLayout = new QHBoxLayout(this);
     horizontalLayout->addWidget(itemInfo.fileNameLabel);
     horizontalLayout->addWidget(itemInfo.lengthLabel);
     horizontalLayout->addWidget(itemInfo.formatLabel);
     this->setProperties();
-
 }
 
 DragLabelItem::~DragLabelItem()
@@ -18,7 +17,7 @@ DragLabelItem::~DragLabelItem()
 
 }
 
-void DragLabelItem::setLabelsText(PlayListItem *item)
+void DragLabelItem::setLabelItems(PlayListItem *item)
 {
     if(!item)
         return;
@@ -27,39 +26,57 @@ void DragLabelItem::setLabelsText(PlayListItem *item)
     itemInfo.fileNameLabel  ->setText(item->absoluteFileName());
 }
 
-void DragLabelItem::setLabelState(bool state)
+void DragLabelItem::configureLabel(int row, PlayListItem* item, QAbstractItemDelegate *delegate, bool show)
 {
-    if(!state){
-        itemInfo.fileNameLabel->setText("");
-        itemInfo.lengthLabel->setNum(-1);
-        itemInfo.formatLabel->setText("");
-        this->hide();
-        return;
-    }
-    else{
-        this->show();
-        this->raise();
-    }
+    this->setLabelItems(item);
+    this->setDefaultDelegate(delegate);
+    this->setLabelRow(row);
+    setDraggingMode(show);
+    if(show)
+        this->showLabel();
+    else
+        this->hideLabel();
+}
+
+void DragLabelItem::hideLabel()
+{
+    this->hide();
+}
+
+bool DragLabelItem::draggingMode() const
+{
+    return _DraggingMode;
 }
 
 void DragLabelItem::setDefaultDelegate(QAbstractItemDelegate *item)
 {
-    this->_defaultDelegate = item;
+    this->_DefaultDelegate = item;
 }
 
 QAbstractItemDelegate* DragLabelItem::defaultDelegate() const
 {
-    return _defaultDelegate;
+    return _DefaultDelegate;
 }
 
-void DragLabelItem::setIndex(int row)
+void DragLabelItem::setLabelRow(int row)
 {
-    _row = row;
+    _Row = row;
 }
 
-int DragLabelItem::row() const
+int DragLabelItem::labelRow() const
 {
-    return _row;
+    return _Row;
+}
+
+void DragLabelItem::setDraggingMode(bool state)
+{
+    this->_DraggingMode = state;
+}
+
+void DragLabelItem::showLabel()
+{
+    this->show();
+    this->raise();
 }
 
 void DragLabelItem::setProperties()
@@ -80,7 +97,7 @@ void DragLabelItem::updateLabelPosition(int x, int y)
 void DragLabelItem::mouseReleased()
 {
     // hide widget and reload removed index
-    setLabelState(false);
-
+    setDraggingMode(false);
+    this->hideLabel();
 
 }

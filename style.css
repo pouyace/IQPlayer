@@ -118,9 +118,9 @@ border:7px solid rgba(75,75,75,0.9);
 border-radius:5px;
 padding:20px;
 }
-DDCGroupBox QWidget{
+/*DDCGroupBox QWidget{
 background-color:rgb(50,50,50);
-}
+}*/
 
 /***************************************BOLDLCD*****************************************/
 

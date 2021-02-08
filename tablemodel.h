@@ -64,6 +64,7 @@ public:
     void freeTable();
     int count() const;
     bool swapRows(int i,int j);
+    bool isValidRow(int row)const;
     PlayListItem* dataAtIndex(int row);
     //virtual Qt::DropActions supportedDropActions() const override;
 protected:

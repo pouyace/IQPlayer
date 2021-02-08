@@ -28,14 +28,21 @@ private:
     QMouseEvent         *mouseEvent     = nullptr;
     TableItemDelegate   *itemDelegate   = nullptr;
     DragLabelItem       *dragLabel      = nullptr;
+
+    bool _pressingMode = false;
     // Methods
+    void setPressingMode(const bool &mode);
+    bool pressingMode() const;
+    int currentRow() const;
     void tryList();
     void setupProperties();
     void handleDragging();
     void swapItems();
     void handleReleasing();
     void dropEvent(QDropEvent *e) override;
-    void dragEnterEvent(QDragEnterEvent *e) override;    
+    void dragEnterEvent(QDragEnterEvent *e) override;
+    void dragLeaveEvent(QDragLeaveEvent *e)override;
+    void dragMoveEvent(QDragMoveEvent *e)override;
     void mouseReleaseEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;

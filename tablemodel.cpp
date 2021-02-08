@@ -184,6 +184,13 @@ bool TableModel::swapRows(int i, int j)
     return false;
 }
 
+bool TableModel::isValidRow(int row) const
+{
+    if(row < count() && row >= 0)
+        return true;
+    return false;
+}
+
 PlayListItem *TableModel::dataAtIndex(int row)
 {
     if(row == -1)

@@ -6,10 +6,10 @@
 #include <QMimeData>
 #include <QDir>
 #include <QMetaEnum>
-#include <QMessageBox>
 #include <QHeaderView>
 #include "tableitemdelegate.h"
 #include "draghandler.h"
+
 PlayListView::PlayListView(QWidget *parent) :
     QTableView(parent),
     ui(new Ui::PlayListView)
@@ -28,6 +28,21 @@ PlayListView::~PlayListView()
 {
     dragLabel->deleteLater();
     delete ui;
+}
+
+void PlayListView::setPressingMode(const bool &mode)
+{
+    _pressingMode = mode;
+}
+
+bool PlayListView::pressingMode() const
+{
+    return _pressingMode;
+}
+
+int PlayListView::currentRow() const
+{
+    return this->indexAt(mouseEvent->pos()).row();
 }
 
 void PlayListView::tryList()
@@ -88,11 +103,10 @@ void PlayListView::setupProperties()
 void PlayListView::handleDragging()
 {
     int row = this->indexAt(mouseEvent->pos()).row();
-    dragLabel->setIndex(row);
-    dragLabel->setDefaultDelegate(this->itemDelegateForRow(row));
-    this->setItemDelegateForRow(row,itemDelegate);
-    dragLabel->setLabelsText(tableModel->dataAtIndex(row));
-    dragLabel->setLabelState(true);
+    if(tableModel->isValidRow(row)){
+        dragLabel->configureLabel(row,tableModel->dataAtIndex(row),itemDelegateForRow(row),true);
+        setItemDelegateForRow(row,itemDelegate);
+    }
     int x = mouseEvent->x() + 1300;
     int y = mouseEvent->y() + 850;
     dragLabel->setGeometry(x,y,170,10);
@@ -100,15 +114,15 @@ void PlayListView::handleDragging()
 
 void PlayListView::swapItems()
 {
+    this->setItemDelegateForRow(dragLabel->labelRow(),dragLabel->defaultDelegate());
     int newRow = this->indexAt(mouseEvent->pos()).row();
-    int oldRow = dragLabel->row();
+    int oldRow = dragLabel->labelRow();
     tableModel->swapRows(oldRow,newRow);
-    handleReleasing();
-    handleDragging();
 }
 void PlayListView::handleReleasing()
 {
-    this->setItemDelegateForRow(dragLabel->row(),dragLabel->defaultDelegate());
+    this->setItemDelegateForRow(dragLabel->labelRow(),dragLabel->defaultDelegate());
+    emit mouseReleased();
 }
 void PlayListView::dropEvent(QDropEvent *e)
 {
@@ -129,39 +143,73 @@ void PlayListView::dragEnterEvent(QDragEnterEvent *e)
     if(e->mimeData()->hasUrls()){
         QString filePath = e->mimeData()->urls().first().path().remove(0,1);
         qDebug()<<"this is the filePath:"<<filePath;
-        if(verifyFileFormat(filePath))
-            e->acceptProposedAction();
+        if(verifyFileFormat(filePath)){
+            e->accept();
+            qDebug()<<"f";
+        }
     }
     else{
         qDebug()<<"Not Url";
     }
 }
 
+void PlayListView::dragLeaveEvent(QDragLeaveEvent *e)
+{
+
+}
+
+void PlayListView::dragMoveEvent(QDragMoveEvent *e)
+{
+//    qDebug()<<"DragMoveEvent";
+}
+
 void PlayListView::mouseReleaseEvent(QMouseEvent *event)
 {
+    mouseEvent = event;
+    int row = currentRow();
+    setPressingMode(false);
     this->setCursor(Qt::ArrowCursor);
     handleReleasing();
-    emit mouseReleased();
+//    this->selectRow(row);
+
 }
 
 void PlayListView::mouseMoveEvent(QMouseEvent *event)
 {
     mouseEvent = event;
-    int row = this->indexAt(mouseEvent->pos()).row();
-    if(dragLabel->row() != row){
-        swapItems();
+    int row = currentRow();
+    if(!tableModel->isValidRow(row)){
+        return;
     }
-    QPoint point = mapToGlobal(QPoint(15,(row + 2)*30-10));
-    emit mousePositionUpdated(point.x(),point.y());
+    if(!pressingMode()){
+        return;
+    }
+    if(!dragLabel->draggingMode()){
+        qDebug()<<"setting dragging up!";
+        handleDragging();
+    }
+    else{
+        if(dragLabel->labelRow() != row){
+            swapItems();
+            handleDragging();
+            this->selectRow(-1);
+        }
+        QPoint point = mapToGlobal(QPoint(15,(row + 2)*30-10));
+        emit mousePositionUpdated(point.x(),point.y());
+    }
 }
 
 void PlayListView::mousePressEvent(QMouseEvent *event)
 {
-    if(!mouseEvent){
-        mouseEvent = new QMouseEvent(*event);
-    }
     mouseEvent = event;
-    handleDragging();
+    int row = currentRow();
+    if(!tableModel->isValidRow(row)){
+        setPressingMode(false);
+    }
+    else{
+        setPressingMode(true);
+        this->setCursor(Qt::ClosedHandCursor);
+    }
 }
 
 bool PlayListView::verifyFileFormat(QString filePath)
