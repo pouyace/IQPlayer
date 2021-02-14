@@ -96,7 +96,9 @@ void PlayListView::setupProperties()
     connect(tableModel,&TableModel::ModelContainerChanged,this,&PlayListView::onModelListChanged);
     connect(this,&PlayListView::mouseReleased,dragLabel,&DragLabelItem::mouseReleased);
     connect(this,&QAbstractItemView::doubleClicked,this,&PlayListView::requestToPlayItem);
+    connect(this,&PlayListView::updateDragLabelSize,dragLabel,&DragLabelItem::onSetLabelSize);
 
+    this->setMouseTracking(true);
 
 }
 
@@ -185,8 +187,8 @@ void PlayListView::mouseMoveEvent(QMouseEvent *event)
         return;
     }
     if(!dragLabel->draggingMode()){
-        qDebug()<<"setting dragging up!";
         handleDragging();
+        this->setCursor(Qt::ClosedHandCursor);
     }
     else{
         if(dragLabel->labelRow() != row){
@@ -194,7 +196,7 @@ void PlayListView::mouseMoveEvent(QMouseEvent *event)
             handleDragging();
             this->selectRow(-1);
         }
-        QPoint point = mapToGlobal(QPoint(15,(row + 2)*30-10));
+        QPoint point = mapToGlobal(QPoint(10,(row + 1)*30));
         emit mousePositionUpdated(point.x(),point.y());
     }
 }
@@ -208,7 +210,6 @@ void PlayListView::mousePressEvent(QMouseEvent *event)
     }
     else{
         setPressingMode(true);
-        this->setCursor(Qt::ClosedHandCursor);
     }
 }
 
@@ -242,12 +243,13 @@ void PlayListView::onResizingViewList()
     this->setColumnWidth(0,widthSize * 2.3);
     this->setColumnWidth(1,widthSize);
     this->setColumnWidth(2,widthSize * 2);
+    emit updateDragLabelSize(this->size());
 
 }
 
 void PlayListView::onModelListChanged(QString msg)
 {
-    qDebug()<<msg;
+//    qDebug()<<msg;
 }
 
 void PlayListView::requestToPlayItem(const QModelIndex &item)

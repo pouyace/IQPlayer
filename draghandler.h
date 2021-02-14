@@ -12,19 +12,22 @@ struct DragLabelItemInfo{
         lengthLabel     = new QLabel(parent);
         formatLabel     = new QLabel(parent);
 
-        fileNameLabel->setMaximumSize(QSize(90,35));
-        lengthLabel->setMaximumSize(QSize(90,  35));
-        formatLabel->setMaximumSize(QSize(70,  35));
-
-        fileNameLabel->setMinimumSize(90,25);
-        lengthLabel  ->setMinimumSize(80,25);
-        formatLabel  ->setMinimumSize(80,25);
+        fileNameLabel->setMinimumSize(20,25);
+        lengthLabel  ->setMinimumSize(20,25);
+        formatLabel  ->setMinimumSize(20,25);
 
         fileNameLabel->setMargin(0);
         lengthLabel->setMargin(0);
         formatLabel->setMargin(0);
 
+        lengthLabel->setAlignment(Qt::AlignCenter);
+
         fileNameLabel->setProperty("class","FixedLabels");
+
+
+        fileNameLabel->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+        lengthLabel  ->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+        formatLabel  ->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
     }
 };
 class DragLabelItem : public QWidget
@@ -35,7 +38,6 @@ public:
     void configureLabel(int row, PlayListItem *item, QAbstractItemDelegate *delegate, bool show);
     QAbstractItemDelegate *defaultDelegate() const;
     int labelRow() const;
-    void hideLabel();
     bool draggingMode()const;
 private:
     DragLabelItemInfo itemInfo;
@@ -51,12 +53,13 @@ private:
     void setDefaultDelegate(QAbstractItemDelegate *item);
     void setLabelItems(PlayListItem *item);
     void setLabelRow(int row);
-
+    void hideLabel();
     void setDraggingMode(bool mode);
     void showLabel();
 public slots:
     void updateLabelPosition(int x , int y);
     void mouseReleased();
+    void onSetLabelSize(const QSize& size);
 };
 
 #endif // DRAGHANDLER_H

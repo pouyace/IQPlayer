@@ -81,9 +81,8 @@ void DragLabelItem::showLabel()
 
 void DragLabelItem::setProperties()
 {
-    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
     this->setWindowFlag(Qt::FramelessWindowHint);
-    horizontalLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinAndMaxSize);
+    horizontalLayout->setSizeConstraint(QLayout::SizeConstraint::SetMaximumSize);
     horizontalLayout->setMargin(0);
     this->setMaximumSize(QSize(270,25));
     this->setProperty("class","mainWidget");
@@ -100,4 +99,10 @@ void DragLabelItem::mouseReleased()
     setDraggingMode(false);
     this->hideLabel();
 
+}
+
+void DragLabelItem::onSetLabelSize(const QSize &size)
+{
+    this->setMaximumSize(size.width() - 25,30);
+    this->setMinimumSize(size.width() - 25,30);
 }

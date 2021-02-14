@@ -83,6 +83,11 @@ IQPlayer QTableView::item:selected{
     border:none;
     color:#505050;
 }
+/*IQPlayer QTableView::item:selected:!active{
+    background-color:red;
+    border:none;
+    color:#505050;
+}*/
 IQPlayer QTableView::item:hover {
     background-color:#505050;
     color:rgba(100,100,100,1);

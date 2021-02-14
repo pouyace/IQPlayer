@@ -57,6 +57,7 @@ public slots:
 signals:
     void mousePositionUpdated(int x, int y);
     void mouseReleased();
+    void updateDragLabelSize(const QSize&);
     void playingItemListRequested(QString filePath,int row);
 };
 
